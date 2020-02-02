@@ -2,24 +2,24 @@ import React from 'react';
 import logo from './logo.svg';
 import './App.css';
 
+import schedules from './bus-scheduling-input.json'
+import { BusScheduleStateProvider } from './BusScheduleStateProvider'
+import BusSchedule from './components/BusSchedule'
+
 function App() {
+  const initialState = {
+    busses: schedules.map((schedule, index) => (
+      { id: index, trips: [schedule] }
+    )),
+    selectedTrip: undefined
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <BusScheduleStateProvider initialState={initialState}>
+      <div className="BusScheduleApp">
+        <BusSchedule/>
+      </div>
+    </BusScheduleStateProvider>
   );
 }
 
