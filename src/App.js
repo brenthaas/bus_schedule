@@ -1,5 +1,4 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
 
 import schedules from './bus-scheduling-input.json'
@@ -11,7 +10,8 @@ function App() {
     busses: schedules.map((schedule, index) => (
       { id: index, trips: [schedule] }
     )),
-    selectedTrip: undefined
+    selectedTripId: undefined,
+    selectedBus: undefined
   };
 
   return (
