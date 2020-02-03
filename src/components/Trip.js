@@ -1,14 +1,17 @@
-import React, { useContext } from 'react'
-import { BusScheduleContext } from '../BusScheduleStateProvider';
+import React from 'react'
 
-const Trip = (trip) => {
-  if (trip) {
+const Trip = ({id, onClick, selected, startTime, duration}) => {
+  if (id) {
     return (
-      <div className={'trip' + (trip.selected ? ' selected' : '')}
-           style={{ width: `${trip.duration}px`, left: `${trip.startTime}px` }}
-           onClick={() => trip.onClick(trip.id)}
+      <div className={'trip' + (selected ? ' selected' : '')}
+           key={'trip' + id}
+           style={{ width: `${duration}px`, left: `${startTime}px` }}
+           onClick={(event) => {
+             onClick(id);
+             event.stopPropagation();
+           }}
       >
-        {trip.id}
+        {id}
       </div>
     )
   }
