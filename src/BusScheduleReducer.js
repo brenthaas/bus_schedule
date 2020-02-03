@@ -13,15 +13,19 @@ const busScheduleReducer = (state, { type, payload }) => {
       const { busId } = { ...payload };
 
       if (selectedTripId) {
+        let foundTrip = undefined;
         const updatedBusses = busses.map(bus => {
-          if (bus.id === busId) {
-            // TODO: add a the trip to this bus
-            return bus;
-          }
-          const filteredTrips = bus.trips.filter(trip => trip.id != selectedTripId);
+          const filteredTrips = bus.trips.filter(trip => {
+            if (trip.id === selectedTripId) {
+              foundTrip = trip;
+              return false;
+            }
+            return true;
+          });
           bus.trips = filteredTrips;
           return bus;
         });
+        updatedBusses[busId].trips.push(foundTrip);
         return { ...state, busses: updatedBusses };
       }
       return state;
