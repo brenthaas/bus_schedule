@@ -2,6 +2,10 @@
   text-align: center;
 }
 
+.bus-schedule {
+  position: relative;
+}
+
 .bus {
   position: relative;
   display: block;
@@ -11,14 +15,21 @@
   height: 30px
 }
 
+.bus:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+.bus-trips {
+  position: absolute;
+  display: inline-block;
+}
+
 .trip {
   position: absolute;
   border: 1px;
   border-style: solid;
   display: inline-block;
   text-align: center;
-  padding-top: 5px;
-  padding-bottom: 5px;
   cursor: pointer;
 }
 

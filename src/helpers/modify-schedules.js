@@ -1,5 +1,13 @@
+import { formatTimestamp } from './time-helpers'
+
 export const cleanupEmptyBusses = busses => {
   return busses.filter(bus => bus.trips.length > 0)
+};
+
+export const busScheduleRange = bus => {
+  const scheduleStartTime = Math.min(...bus.trips.map(trip => trip.startTime));
+  const scheduleEndTime = Math.max(...bus.trips.map(trip => trip.endTime));
+  return `${formatTimestamp(scheduleStartTime)} - ${formatTimestamp(scheduleEndTime)}`
 };
 
 export const findTrip = (tripId, busses) => {
@@ -18,6 +26,26 @@ export const hasSchedulingConflict = (trip, schedule) => {
       return schedulesOverlap(trip, scheduledTrip)
     };
   });
+};
+
+export const moveTripToBus = (bus, tripId, busses) => {
+  let foundTrip = findTrip(tripId, busses);
+  if (foundTrip) {
+    if (hasSchedulingConflict(foundTrip, bus.trips)) {
+      alert(
+        `Schedule Conflict: Trip ${tripId} can not be added to bus ${bus.id}`
+      );
+      return busses;
+    } else {
+      const updatedBusses = removeTrip(foundTrip, busses);
+      bus.trips.push(foundTrip);
+      return cleanupEmptyBusses(updatedBusses);
+    }
+  }
+};
+
+export const nextBusId = busses => {
+  return Math.max(...busses.map(bus => bus.id)) + 1;
 };
 
 export const removeTrip = (tripToRemove, busses) => {
