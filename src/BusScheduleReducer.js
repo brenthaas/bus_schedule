@@ -1,3 +1,10 @@
+import {
+  cleanupEmptyBusses,
+  findTrip,
+  hasSchedulingConflict,
+  removeTrip
+} from './helpers/modify-schedules'
+
 export const SELECT_TRIP = "SELECT_TRIP";
 export const SELECT_BUS = "SELECT_BUS";
 
@@ -13,20 +20,26 @@ const busScheduleReducer = (state, { type, payload }) => {
       const { busId } = { ...payload };
 
       if (selectedTripId) {
-        let foundTrip = undefined;
-        const updatedBusses = busses.map(bus => {
-          const filteredTrips = bus.trips.filter(trip => {
-            if (trip.id === selectedTripId) {
-              foundTrip = trip;
-              return false;
-            }
-            return true;
-          });
-          bus.trips = filteredTrips;
-          return bus;
-        });
-        updatedBusses[busId].trips.push(foundTrip);
-        return { ...state, busses: updatedBusses };
+        const selectedBus = busses.find(bus => bus.id === busId)
+
+        let foundTrip = findTrip(selectedTripId, busses);
+        if (foundTrip) {
+          if (hasSchedulingConflict(foundTrip, selectedBus.trips)) {
+            alert(
+              `Schedule Conflict: Trip ${selectedTripId} can not be added to bus ${selectedBus.id}`
+            );
+          } else {
+            const updatedBusses = removeTrip(foundTrip, busses);
+            selectedBus.trips.push(foundTrip);
+            const filteredBusses = cleanupEmptyBusses(updatedBusses);
+            return {
+              ...state,
+              busses: filteredBusses,
+              selectedBus: undefined,
+              selectedTripId: undefined
+            };
+          }
+        }
       }
       return state;
     }
