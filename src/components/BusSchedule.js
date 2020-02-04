@@ -9,7 +9,8 @@ const BusSchedule = () => {
   if (state) {
     return (
       <div className='bus-schedule'>
-        <div>Busses Schedule:</div>
+        <div>Bus Schedule:</div>
+        <hr/>
         { state.busses.map(bus => <Bus bus={bus} key={`BUS-${bus.id}`}/> )}
         { state.selectedTripId ? <NewBus/> : '' }
       </div>
