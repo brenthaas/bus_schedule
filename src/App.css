@@ -24,6 +24,13 @@
   display: inline-block;
 }
 
+.heading {
+  border: 1px;
+  border-style: solid;
+  padding-bottom: 5px;
+  margin-bottom: 10px;
+}
+
 .trip {
   position: absolute;
   border: 1px;
